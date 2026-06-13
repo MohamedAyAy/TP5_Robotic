@@ -1,0 +1,97 @@
+<?xml version="1.0"?>
+<sdf version="1.8">
+  <world name="pick_scene">
+
+    <!-- Physics -->
+    <physics name="1ms" type="ignored">
+      <max_step_size>0.001</max_step_size>
+      <real_time_factor>1.0</real_time_factor>
+    </physics>
+
+    <!-- Required Gazebo plugins -->
+    <plugin filename="gz-sim-physics-system" name="gz::sim::systems::Physics"/>
+    <plugin filename="gz-sim-user-commands-system" name="gz::sim::systems::UserCommands"/>
+    <plugin filename="gz-sim-scene-broadcaster-system" name="gz::sim::systems::SceneBroadcaster"/>
+    <plugin filename="gz-sim-sensors-system" name="gz::sim::systems::Sensors">
+      <render_engine>ogre2</render_engine>
+    </plugin>
+
+    <!-- Sunlight -->
+    <light name="sun" type="directional">
+      <cast_shadows>true</cast_shadows>
+      <pose>0 0 10 0 0 0</pose>
+      <diffuse>0.8 0.8 0.8 1</diffuse>
+      <specular>0.2 0.2 0.2 1</specular>
+      <direction>-0.5 0.1 -0.9</direction>
+    </light>
+
+    <!-- Ground plane -->
+    <model name="ground_plane">
+      <static>true</static>
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <plane><normal>0 0 1</normal><size>100 100</size></plane>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <plane><normal>0 0 1</normal><size>100 100</size></plane>
+          </geometry>
+          <material>
+            <ambient>0.8 0.8 0.8 1</ambient>
+            <diffuse>0.8 0.8 0.8 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- Table: 60x60cm top surface at z=0.425 (pose z=0.4 + half-height 0.025) -->
+    <model name="table">
+      <static>true</static>
+      <pose>0.5 0 0.4 0 0 0</pose>
+      <link name="link">
+        <collision name="c">
+          <geometry><box><size>0.6 0.6 0.05</size></box></geometry>
+        </collision>
+        <visual name="v">
+          <geometry><box><size>0.6 0.6 0.05</size></box></geometry>
+          <material>
+            <ambient>0.6 0.4 0.2 1</ambient>
+            <diffuse>0.6 0.4 0.2 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- Target cup: blue cylinder on the table
+         Table top surface = 0.4 + 0.025 = 0.425
+         Cup half-height   = 0.05
+         Cup centre Z      = 0.425 + 0.05 = 0.475 -->
+    <model name="target_cup">
+      <pose>0.45 0.1 0.475 0 0 0</pose>
+      <link name="link">
+        <inertial>
+          <mass>0.1</mass>
+          <inertia><ixx>0.001</ixx><iyy>0.001</iyy><izz>0.001</izz></inertia>
+        </inertial>
+        <collision name="c">
+          <geometry>
+            <cylinder><radius>0.04</radius><length>0.1</length></cylinder>
+          </geometry>
+        </collision>
+        <visual name="v">
+          <geometry>
+            <cylinder><radius>0.04</radius><length>0.1</length></cylinder>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.9 1</ambient>
+            <diffuse>0.1 0.1 0.9 1</diffuse>
+            <specular>0.5 0.5 0.5 1</specular>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+  </world>
+</sdf>
